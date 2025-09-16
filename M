@@ -68,21 +68,14 @@ local function isHeldByOther(obj)
 end
 
 local function findFruit()
-    if workspace:FindFirstChild("Fruit") then 
-        return workspace.Fruit 
-    end
-
     local closest, minDist
     if not RootPart then return nil end
     local myPos = RootPart.Position
 
-    for _, obj in ipairs(workspace:GetDescendants()) do
-        if (obj:IsA("Model") or obj:IsA("BasePart")) and obj:FindFirstChild("Handle") and string.find(obj.Name:lower(), "fruit") then
-            local inBackpack = Backpack:FindFirstChild(obj.Name)
-            local inHand = RootPart.Parent:FindFirstChild(obj.Name)
-            local heldByOther = obj.Handle.Parent:FindFirstChild("Humanoid") and obj.Handle.Parent ~= RootPart.Parent
+    for _, obj in ipairs(workspace:GetChildren()) do
+        if (obj:IsA("Model") or obj:IsA("BasePart")) and string.find(obj.Name:lower(), "fruit") then
             local pos = getTargetPos(obj)
-            if pos and pos.Y >= -5 and not inBackpack and not inHand and not heldByOther then
+            if pos and pos.Y >= -5 then
                 local dist = (pos - myPos).Magnitude
                 if not minDist or dist < minDist then
                     minDist = dist
@@ -93,7 +86,6 @@ local function findFruit()
     end
     return closest
 end
-
 local function ensurePartBelow()
     local part = Instance.new("Part")
     part.Size = Vector3.new(699,1,699)
@@ -229,3 +221,4 @@ task.spawn(function()
         end)
     end
 end)
+
