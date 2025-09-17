@@ -404,3 +404,65 @@ task.spawn(function()
     end
 end)
 
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RootPart = nil
+task.spawn(function()
+    while task.wait(0.1) do
+        local char = LocalPlayer.Character
+        RootPart = char and char:FindFirstChild("HumanoidRootPart")
+    end
+end)
+local function getTargetPos(obj)
+    if obj:IsA("Tool") and obj:FindFirstChild("Handle") then
+        return obj.Handle.Position
+    end
+    return nil
+end
+
+local function CreateESP(obj)
+    if obj:FindFirstChild("FruitESP") then return end
+    if not (obj:IsA("Tool") and obj:FindFirstChild("Handle")) then return end
+
+    local handle = obj.Handle
+    if not handle then return end
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "FruitESP"
+    billboard.Adornee = handle
+    billboard.AlwaysOnTop = true
+    billboard.Size = UDim2.new(0, 140, 0, 30)
+    billboard.StudsOffset = Vector3.new(0, 2, 0)
+    billboard.Parent = LocalPlayer:WaitForChild("PlayerGui") 
+    local text = Instance.new("TextLabel", billboard)
+    text.Size = UDim2.new(1, 0, 1, 0)
+    text.BackgroundTransparency = 1
+    text.TextColor3 = Color3.fromRGB(0, 255, 0)
+    text.TextStrokeTransparency = 0
+    text.Font = Enum.Font.SciFi
+    text.TextScaled = true
+    task.spawn(function()
+        while billboard.Parent do
+            if RootPart then
+                local pos = getTargetPos(obj)
+                if pos then
+                    local dist = (pos - RootPart.Position).Magnitude
+                    text.Text = obj.Name .. " [" .. math.floor(dist) .. "m]"
+                else
+                    text.Text = obj.Name
+                end
+            end
+            task.wait(0.1)
+        end
+    end)
+end
+for _, obj in ipairs(workspace:GetChildren()) do
+    if obj:IsA("Tool") and string.find(obj.Name:lower(), "fruit") and obj:FindFirstChild("Handle") then
+        CreateESP(obj)
+    end
+end
+workspace.ChildAdded:Connect(function(obj)
+    if obj:IsA("Tool") and string.find(obj.Name:lower(), "fruit") and obj:FindFirstChild("Handle") then
+        CreateESP(obj)
+    end
+end)
