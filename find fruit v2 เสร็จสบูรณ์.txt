@@ -1,4 +1,4 @@
-local TweenService = game:GetService("TweenService")
+100al TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -244,12 +244,12 @@ end)
 
 local function hopServer()
     local servers = {}
-    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
+    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=1000"
     local suc, result = pcall(function() return game:HttpGet(url) end)
     if suc and result then
         local data = HttpService:JSONDecode(result)
         for _,srv in pairs(data.data) do
-            if srv.playing == (_G.severhop or 5) then 
+            if srv.playing == (_G.severhop or 3) then 
                 table.insert(servers, srv.id)
             end
         end
