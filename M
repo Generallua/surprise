@@ -1,3 +1,4 @@
+pcall(function()
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
@@ -1058,3 +1059,4 @@ task.spawn(function()
         end)
     end
 end)
+end
