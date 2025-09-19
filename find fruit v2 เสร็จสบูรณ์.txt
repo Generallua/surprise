@@ -244,7 +244,7 @@ end)
 
 local function hopServer()
     local servers = {}
-    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=1000"
+    local url = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
     local suc, result = pcall(function() return game:HttpGet(url) end)
     if suc and result then
         local data = HttpService:JSONDecode(result)
